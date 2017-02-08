@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="ProjectModuleManager">
+    <modules>
+      <module fileurl="file://$PROJECT_DIR$/CommonLibrary/CommonLibrary.iml" filepath="$PROJECT_DIR$/CommonLibrary/CommonLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/DavidNBA_ywh.iml" filepath="$PROJECT_DIR$/DavidNBA_ywh.iml" />
+      <module fileurl="file://$PROJECT_DIR$/FlycoDialogLibrary/FlycoDialogLibrary.iml" filepath="$PROJECT_DIR$/FlycoDialogLibrary/FlycoDialogLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MaterialPtrLibrary/MaterialPtrLibrary.iml" filepath="$PROJECT_DIR$/MaterialPtrLibrary/MaterialPtrLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/QuickAdapterLibrary/QuickAdapterLibrary.iml" filepath="$PROJECT_DIR$/QuickAdapterLibrary/QuickAdapterLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/SwipeBackLibrary/SwipeBackLibrary.iml" filepath="$PROJECT_DIR$/SwipeBackLibrary/SwipeBackLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/VideoPlayerLibrary/VideoPlayerLibrary.iml" filepath="$PROJECT_DIR$/VideoPlayerLibrary/VideoPlayerLibrary.iml" />
+      <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
+    </modules>
+  </component>
+</project>

@@ -1,0 +1,1 @@
+include ':app', ':CommonLibrary', ':FlycoDialogLibrary', ':MaterialPtrLibrary', ':QuickAdapterLibrary', ':SwipeBackLibrary', ':VideoPlayerLibrary'

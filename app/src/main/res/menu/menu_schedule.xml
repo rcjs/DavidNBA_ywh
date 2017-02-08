@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <!--orderInCategory表明摆放的顺序，不一定从0还是计算，但必须大于等于0，数值小的位于前。-->
+<item
+    android:id="@+id/action_calendar"
+    android:orderInCategory="100"
+    android:icon="@drawable/ic_calendar"
+    android:title="日历"
+    app:showAsAction="always"
+        />
+</menu>
