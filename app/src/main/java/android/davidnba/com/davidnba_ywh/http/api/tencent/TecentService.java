@@ -4,13 +4,17 @@ package android.davidnba.com.davidnba_ywh.http.api.tencent;
 import android.davidnba.com.davidnba_ywh.BuildConfig;
 import android.davidnba.com.davidnba_ywh.http.api.RequestCallback;
 import android.davidnba.com.davidnba_ywh.http.bean.match.MatchCalendar;
+import android.davidnba.com.davidnba_ywh.http.bean.news.VideoRealUrl;
 import android.davidnba.com.davidnba_ywh.http.okhttp.OkHttpHelper;
 import android.davidnba.com.davidnba_ywh.http.utils.JsonParser;
+import android.davidnba.com.davidnba_ywh.http.utils.PullRealUrlParser;
 import android.text.TextUtils;
 
 import com.yuyh.library.AppUtils;
 import com.yuyh.library.utils.data.ACache;
 import com.yuyh.library.utils.log.LogUtils;
+
+import java.io.ByteArrayInputStream;
 
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -73,6 +77,41 @@ public class TecentService {
 
             @Override
             public void onFailure(Call<String> call, Throwable t) {
+                cbk.onFailure(t.getMessage());
+            }
+        });
+    }
+
+
+
+    public static void getVideoRealUrl(String vid,final RequestCallback<VideoRealUrl> cbk){
+        Retrofit retrofit = new Retrofit.Builder()
+                .baseUrl(BuildConfig.TECENT_URL_SERVER)
+                .addConverterFactory(ScalarsConverterFactory.create())
+                .client(OkHttpHelper.getTecentClient()).build();
+        TencentVideoApi api = retrofit.create(TencentVideoApi.class);
+        Call<String> call = api.getVideoRealUrl(vid);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response != null && !TextUtils.isEmpty(response.body())) {
+                    String xmlStr = response.body();
+                    PullRealUrlParser parser = new PullRealUrlParser();
+                    try {
+                        VideoRealUrl url = parser.parse(new ByteArrayInputStream(xmlStr.getBytes("UTF-8")));
+                        cbk.onSuccess(url);
+                    } catch (Exception e) {
+                        LogUtils.e("解析xml异常:" + e.getMessage());
+                        cbk.onFailure("解析出错");
+                    }
+                } else {
+                    cbk.onFailure("获取数据失败");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                LogUtils.e(t.getMessage());
                 cbk.onFailure(t.getMessage());
             }
         });

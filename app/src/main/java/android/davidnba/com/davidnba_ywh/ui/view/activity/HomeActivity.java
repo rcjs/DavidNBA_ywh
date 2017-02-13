@@ -7,6 +7,8 @@ import android.davidnba.com.davidnba_ywh.app.Constant;
 import android.davidnba.com.davidnba_ywh.base.BaseAppCompatActivity;
 import android.davidnba.com.davidnba_ywh.base.BaseLazyFragment;
 import android.davidnba.com.davidnba_ywh.entity.NavigationEntity;
+import android.davidnba.com.davidnba_ywh.event.CalendarEvent;
+import android.davidnba.com.davidnba_ywh.ui.adapter.VPHomeAdapter;
 import android.davidnba.com.davidnba_ywh.ui.presenter.Presenter;
 import android.davidnba.com.davidnba_ywh.ui.presenter.impl.HomePresenterImpl;
 import android.davidnba.com.davidnba_ywh.ui.view.HomeView;
@@ -109,7 +111,7 @@ public class HomeActivity extends BaseAppCompatActivity implements HomeView {
         if (null != fragments && !fragments.isEmpty()) {
             mViewPager.setEnableScroll(false);
             mViewPager.setOffscreenPageLimit(fragments.size());
-            mViewPager.setAdapter(new VPHomeAdapter(getSupportFragmentManager()));
+            mViewPager.setAdapter(new VPHomeAdapter(getSupportFragmentManager(), fragments));
         }
 
         mActionBarDrawerToggle = new ActionBarDrawerToggle(this, mDrawerLayout, mToolbar, R.string.drawer_open, R.string.drawer_close) {

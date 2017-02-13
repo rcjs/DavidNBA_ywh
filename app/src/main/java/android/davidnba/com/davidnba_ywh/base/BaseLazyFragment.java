@@ -1,8 +1,10 @@
 package android.davidnba.com.davidnba_ywh.base;
 
+import android.content.DialogInterface;
 import android.davidnba.com.davidnba_ywh.widget.LoadingDialog;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.KeyEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
@@ -211,5 +213,47 @@ public class BaseLazyFragment extends BaseFragment {
             super.setContentView(view);
         }
     }
+
+
+
+      /**
+       * 显示刷新Loadding
+       */
+      public void showLoadingDialog() {
+          try {
+              mLoadingDialog = LoadingDialog.createDialog(mActivity);
+              mLoadingDialog.setTitle(null);
+              mLoadingDialog.setCancelable(false);
+              mLoadingDialog.setOnKeyListener(new DialogInterface.OnKeyListener() {
+                  @Override
+                  public boolean onKey(DialogInterface dialog, int keyCode, KeyEvent event) {
+                      if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
+                          hideLoadingDialog();
+                      }
+                      return true;
+                  }
+              });
+              mLoadingDialog.show();
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+      }
+
+      /**
+       * 隐藏刷新Loadding
+       */
+      public void hideLoadingDialog() {
+          try {
+              if (mLoadingDialog != null) {
+                  if (mLoadingDialog.animation != null) {
+                      mLoadingDialog.animation.reset();
+                  }
+                  mLoadingDialog.dismiss();
+                  mLoadingDialog = null;
+              }
+          } catch (Exception e) {
+              e.printStackTrace();
+          }
+      }
 
 }
