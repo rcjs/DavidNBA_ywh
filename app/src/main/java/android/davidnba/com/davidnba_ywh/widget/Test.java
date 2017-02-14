@@ -5,18 +5,49 @@ package android.davidnba.com.davidnba_ywh.widget;
  */
 
 public class Test {
-    public static void main(String[] args){
-        int a = 10;
-        int b = 10;
-        method(a,b);
-        System.out.println("a=" +a);
-        System.out.println("b=" +b);
+
+
+    /**
+     * name : 王五
+     * gender : man
+     * age : 15
+     * height : 140cm
+     */
+
+    private String name;
+    private String gender;
+    private int age;
+    private String height;
+
+    public String getName() {
+        return name;
     }
 
-    private static void method(int a, int b) {
-        System.out.println("a=" +100);
-        System.out.println("b=" +200);
-        System.exit(0);
+    public void setName(String name) {
+        this.name = name;
     }
 
+    public String getGender() {
+        return gender;
+    }
+
+    public void setGender(String gender) {
+        this.gender = gender;
+    }
+
+    public int getAge() {
+        return age;
+    }
+
+    public void setAge(int age) {
+        this.age = age;
+    }
+
+    public String getHeight() {
+        return height;
+    }
+
+    public void setHeight(String height) {
+        this.height = height;
+    }
 }

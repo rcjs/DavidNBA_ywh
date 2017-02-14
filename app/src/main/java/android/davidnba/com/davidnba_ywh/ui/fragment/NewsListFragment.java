@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.davidnba.com.davidnba_ywh.R;
 import android.davidnba.com.davidnba_ywh.app.Constant;
 import android.davidnba.com.davidnba_ywh.base.BaseLazyFragment;
+import android.davidnba.com.davidnba_ywh.base.BaseWebActivity;
 import android.davidnba.com.davidnba_ywh.http.bean.news.NewsItem;
 import android.davidnba.com.davidnba_ywh.support.OnListItemClickListener;
 import android.davidnba.com.davidnba_ywh.support.SupportRecyclerView;
@@ -15,6 +16,9 @@ import android.view.View;
 
 import com.cjj.MaterialRefreshLayout;
 import com.yuyh.library.utils.DimenUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import butterknife.InjectView;
@@ -34,6 +38,12 @@ public class NewsListFragment extends BaseLazyFragment {
     SupportRecyclerView recyclerView;
     @InjectView(R.id.emptyView)
     View emptyView;
+
+    private List<NewsItem.NewsItemBean> list = new ArrayList<>();
+    private int start = 0;//查询数据起始位置
+    private int num = 10;
+    Constant.NewsType newType = Constant.NewsType.BANNER;
+
 
     @Override
     protected void onCreateViewLazy(Bundle savedInstanceState) {
