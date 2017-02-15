@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="android.davidnba.com.davidnba_ywh">
+    package="davidnba.com.davidnba_ywh">
 
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
@@ -15,19 +15,34 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application
-        android:name=".app.SprintNBA"
+        android:name="davidnba.com.davidnba_ywh.app.SprintNBA"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-       <activity android:name=".ui.view.activity.HomeActivity">
-
-       </activity>
-
-        <activity android:name=".ui.view.activity.CalendarActivity"
+        <activity
+            android:name="davidnba.com.davidnba_ywh.ui.view.activity.HomeActivity"
+            android:configChanges="orientation|keyboardHidden|screenSize"
             android:screenOrientation="portrait"
-            />
+            android:theme="@style/AppTheme.NoneTranslucent">
+
+        </activity>
+
+        <activity
+            android:name="davidnba.com.davidnba_ywh.ui.view.activity.CalendarActivity"
+            android:screenOrientation="portrait" >
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
+        </activity>
+
+        <activity
+            android:name="davidnba.com.davidnba_ywh.ui.view.activity.NewsDetailActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

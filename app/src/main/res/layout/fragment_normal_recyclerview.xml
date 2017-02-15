@@ -16,7 +16,7 @@
     app:wave_show="true">
 
 
-    <android.davidnba.com.davidnba_ywh.support.SupportRecyclerView
+    <davidnba.com.davidnba_ywh.support.SupportRecyclerView
         android:id="@+id/recyclerview"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
