@@ -43,6 +43,11 @@
         <activity
             android:name="davidnba.com.davidnba_ywh.ui.view.activity.NewsDetailActivity"
             android:screenOrientation="portrait" />
+
+        <activity android:name=".base.BaseWebActivity"
+            android:screenOrientation="portrait" >
+
+        </activity>
     </application>
 
 </manifest>

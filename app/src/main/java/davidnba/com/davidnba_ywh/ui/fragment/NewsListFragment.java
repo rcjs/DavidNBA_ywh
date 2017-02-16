@@ -64,11 +64,13 @@ public class NewsListFragment extends BaseLazyFragment {
         ButterKnife.bind(this, getContentView());
         showLoadingDialog();
         newsType = (Constant.NewsType) getArguments().getSerializable(INTENT_INT_INDEX);
+        Log.d("rcjs + newtype" ,"rcjs + newtype" + newsType);
         initView();
         requestIndex(false);
     }
 
     private void requestIndex(final boolean isRefresh) {
+        Log.d("rcjs + newtype" ,"rcjs + newtypeRE" + newsType);
         TecentService.getNewsIndex(newsType,isRefresh,new RequestCallback<NewsIndex>(){
             @Override
             public void onSuccess(NewsIndex newsIndex) {
@@ -95,6 +97,7 @@ public class NewsListFragment extends BaseLazyFragment {
             @Override
             public void onItemClick(View view, int position, NewsItem.NewsItemBean data) {
                 Intent intent;
+                Log.d("rcjs + newtype" ,"rcjs + newtypezz" + newsType);
                 switch (newsType) {
                     case VIDEO:
                     case DEPTH:

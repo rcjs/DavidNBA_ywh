@@ -4,7 +4,9 @@ package davidnba.com.davidnba_ywh.http.api.tencent;
 import davidnba.com.davidnba_ywh.BuildConfig;
 import davidnba.com.davidnba_ywh.app.Constant;
 import davidnba.com.davidnba_ywh.http.api.RequestCallback;
+import davidnba.com.davidnba_ywh.http.bean.match.MatchBaseInfo;
 import davidnba.com.davidnba_ywh.http.bean.match.MatchCalendar;
+import davidnba.com.davidnba_ywh.http.bean.match.Matchs;
 import davidnba.com.davidnba_ywh.http.bean.news.NewsDetail;
 import davidnba.com.davidnba_ywh.http.bean.news.NewsIndex;
 import davidnba.com.davidnba_ywh.http.bean.news.NewsItem;
@@ -226,6 +228,74 @@ public class TecentService {
                     NewsItem newsItem = JsonParser.parseNewsItem(jsonStr);
                     cbk.onSuccess(newsItem);
                     cache.put(key, newsItem);
+                    LogUtils.d("resp:" + jsonStr);
+                } else {
+                    cbk.onFailure("获取数据失败");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                cbk.onFailure(t.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * 根据日期查询赛程
+     *
+     * @param date      日期。格式：YYYY-MM-DD
+     * @param isRefresh 是否重新请求数据
+     * @param cbk
+     */
+    public static void getMatchsByDate(String date, boolean isRefresh, final RequestCallback<Matchs> cbk) {
+        final String key = "getMatchsByDate" + date;
+        final ACache cache = ACache.get(AppUtils.getAppContext());
+        Object obj = cache.getAsObject(key);
+        if (obj != null && !isRefresh) {
+            Matchs matchs = (Matchs) obj;
+            cbk.onSuccess(matchs);
+            return;
+        }
+
+        Call<String> call = api.getMatchsByData(date);
+        call.enqueue(new retrofit2.Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, retrofit2.Response<String> response) {
+                if (response != null && !TextUtils.isEmpty(response.body())) {
+                    String jsonStr = response.body();
+                    LogUtils.d("resp:" + jsonStr);
+                    Matchs matchs = JsonParser.parseWithGson(Matchs.class, jsonStr);
+                    cbk.onSuccess(matchs);
+                    cache.put(key, matchs);
+                } else {
+                    cbk.onFailure("获取数据失败");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                cbk.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    /**
+     * 获取比赛信息
+     *
+     * @param mid
+     * @param cbk
+     */
+    public static void getMatchBaseInfo(String mid, final RequestCallback<MatchBaseInfo.BaseInfo> cbk) {
+        Call<String> call = api.getMatchBaseInfo(mid);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response != null && !TextUtils.isEmpty(response.body())) {
+                    String jsonStr = response.body();
+                    MatchBaseInfo info = JsonParser.parseWithGson(MatchBaseInfo.class, jsonStr);
+                    cbk.onSuccess(info.data);
                     LogUtils.d("resp:" + jsonStr);
                 } else {
                     cbk.onFailure("获取数据失败");
