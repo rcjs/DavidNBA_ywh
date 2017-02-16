@@ -20,6 +20,7 @@ import android.os.Handler;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 
 import com.cjj.MaterialRefreshLayout;
@@ -54,7 +55,6 @@ public class NewsListFragment extends BaseLazyFragment {
     private List<String> indexs = new ArrayList<>();
     private int start = 0;//查询数据起始位置
     private int num = 10;
-    Constant.NewsType newType = Constant.NewsType.BANNER;
 
 
     @Override
@@ -99,6 +99,10 @@ public class NewsListFragment extends BaseLazyFragment {
                     case VIDEO:
                     case DEPTH:
                     case HIGHLIGHT:
+                        Log.d("rcjs+video","+++++");
+                        Log.d("rcjs+video","+++++"+data.title);
+                        Log.d("rcjs+video",data.url +"+++++");
+                        Log.d("rcjs+video",data.url +"+++++"+data.title);
                         intent = new Intent(mActivity, BaseWebActivity.class);
                         intent.putExtra(BaseWebActivity.BUNDLE_KEY_URL, data.url);
                         intent.putExtra(BaseWebActivity.BUNDLE_KEY_TITLE, data.title);
@@ -107,6 +111,7 @@ public class NewsListFragment extends BaseLazyFragment {
                     case BANNER:
                     case NEWS:
                     default:
+                        Log.d("rcjs+url",data.url +"+++++"+data.index);
                         intent = new Intent(mActivity, NewsDetailActivity.class);
                         intent.putExtra(NewsDetailActivity.TITLE, data.title);
                         intent.putExtra(NewsDetailActivity.ARTICLE_ID, data.index);

@@ -34,6 +34,7 @@ import com.yuyh.library.permission.AcpListener;
 import com.yuyh.library.permission.AcpOptions;
 import com.yuyh.library.utils.DeviceUtils;
 import com.yuyh.library.utils.toast.ToastUtils;
+import com.yuyh.library.view.viewpager.XViewPager;
 import com.zengcanxiang.baseAdapter.absListView.HelperAdapter;
 import com.zengcanxiang.baseAdapter.absListView.HelperViewHolder;
 
@@ -51,10 +52,8 @@ import cn.bmob.v3.update.BmobUpdateAgent;
 
 public class HomeActivity extends BaseAppCompatActivity implements HomeView {
 
-    /*@InjectView(R.id.home_container)
-    XViewPager mViewPager;*/
     @BindView(R.id.home_container)
-    ViewPager mViewPager;
+    XViewPager mViewPager;
     @BindView(R.id.home_navigation_list)
     ListView mNavListView;
     @BindView(R.id.home_drawer)
@@ -110,13 +109,8 @@ public class HomeActivity extends BaseAppCompatActivity implements HomeView {
     @Override
     public void intializeViews(List<BaseLazyFragment> fragments, List<NavigationEntity> navigationEntityList) {
         if (null != fragments && !fragments.isEmpty()) {
-          //  mViewPager.setEnableScroll(false);
+            mViewPager.setEnableScroll(false);
             Log.d("rcjs","rcjs"+fragments.size());
-
-          /*  mViewPager = (ViewPager) findViewById(R.id.home_container) ;
-           mNavListView = (ListView) findViewById(R.id.home_navigation_list) ;
-           mDrawerLayout= (DrawerLayout) findViewById(R.id.home_drawer) ;*/
-
             mViewPager.setOffscreenPageLimit(fragments.size());
             mViewPager.setAdapter(new VPHomeAdapter(getSupportFragmentManager(), fragments));
         }

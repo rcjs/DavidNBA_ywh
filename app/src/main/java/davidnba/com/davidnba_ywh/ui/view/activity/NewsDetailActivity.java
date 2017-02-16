@@ -10,6 +10,7 @@ import davidnba.com.davidnba_ywh.ui.presenter.impl.NewsDetailPresenterImpl;
 import davidnba.com.davidnba_ywh.ui.view.NewsDetailView;
 import davidnba.com.davidnba_ywh.utils.ImageUtils;
 import davidnba.com.davidnba_ywh.widget.PhotoView;
+
 import android.graphics.Bitmap;
 import android.os.Looper;
 import android.text.TextUtils;
@@ -74,18 +75,19 @@ public class NewsDetailActivity extends BaseSwipeBackCompatActivity implements N
 
     @Override
     protected void initViewsAndEvents() {
-showLoadingDialog();
+        showLoadingDialog();
         inflate = LayoutInflater.from(this);
         Intent intent = getIntent();
         String title = intent.getStringExtra(TITLE);
-        if(!TextUtils.isEmpty(title)){
+        if (!TextUtils.isEmpty(title)) {
             setTitle(title);
-        }else{
+        } else {
             setTitle("详细新闻");
         }
         String arcId = intent.getStringExtra(ARTICLE_ID);
         initPhotoView();
-        NewsDetailPresenter presenter = new NewsDetailPresenterImpl(this,this);
+        NewsDetailPresenter presenter = new NewsDetailPresenterImpl(this, this);
+        presenter.initialized(arcId);
     }
 
     private void initPhotoView() {
@@ -163,35 +165,35 @@ showLoadingDialog();
     }
 
     private void showSaveDialog() {
-            final String[] stringItems = {"保存图片"};
-            final ActionSheetDialog dialog = new ActionSheetDialog(mContext, stringItems, mPhotoView);
-            dialog.isTitleShow(false).show();
+        final String[] stringItems = {"保存图片"};
+        final ActionSheetDialog dialog = new ActionSheetDialog(mContext, stringItems, mPhotoView);
+        dialog.isTitleShow(false).show();
 
-            dialog.setOnOperItemClickL(new OnOperItemClickL() {
-                @Override
-                public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
-                    mPhotoView.setDrawingCacheEnabled(true);
-                    final Bitmap bmp = Bitmap.createBitmap(mPhotoView.getDrawingCache());
-                    new Thread(new Runnable() {
-                        @Override
-                        public void run() {
-                            if (ImageUtils.saveImageToGallery(mContext, bmp)) {
-                                Looper.prepare();
-                                ToastUtils.showToast("保存图片成功");
-                                Looper.loop();
-                            } else {
-                                Looper.prepare();
-                                ToastUtils.showToast("保存图片失败");
-                                Looper.loop();
-                            }
+        dialog.setOnOperItemClickL(new OnOperItemClickL() {
+            @Override
+            public void onOperItemClick(AdapterView<?> parent, View view, int position, long id) {
+                mPhotoView.setDrawingCacheEnabled(true);
+                final Bitmap bmp = Bitmap.createBitmap(mPhotoView.getDrawingCache());
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        if (ImageUtils.saveImageToGallery(mContext, bmp)) {
+                            Looper.prepare();
+                            ToastUtils.showToast("保存图片成功");
+                            Looper.loop();
+                        } else {
+                            Looper.prepare();
+                            ToastUtils.showToast("保存图片失败");
+                            Looper.loop();
                         }
-                    }).start();
+                    }
+                }).start();
 
-                    mPhotoView.setDrawingCacheEnabled(false);
-                    dialog.dismiss();
-                }
-            });
-        }
+                mPhotoView.setDrawingCacheEnabled(false);
+                dialog.dismiss();
+            }
+        });
+    }
 
     @Override
     public void onBackPressed() {
