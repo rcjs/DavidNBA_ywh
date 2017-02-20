@@ -6,6 +6,7 @@ import davidnba.com.davidnba_ywh.R;
 import davidnba.com.davidnba_ywh.base.BaseLazyFragment;
 import davidnba.com.davidnba_ywh.entity.NavigationEntity;
 import davidnba.com.davidnba_ywh.ui.fragment.NewsFragment;
+import davidnba.com.davidnba_ywh.ui.fragment.ScheduleFragment;
 import davidnba.com.davidnba_ywh.ui.interactor.HomeInteractor;
 
 import java.util.ArrayList;
@@ -34,7 +35,7 @@ public class HomeInteractorImpl implements HomeInteractor{
     public List<BaseLazyFragment> getPagerFragents() {
         List<BaseLazyFragment> fragments = new ArrayList<BaseLazyFragment>() {{
             add(new NewsFragment());
-            add(new NewsFragment());
+            add(new ScheduleFragment());
             add(new NewsFragment());
             add(new NewsFragment());
             add(new NewsFragment());

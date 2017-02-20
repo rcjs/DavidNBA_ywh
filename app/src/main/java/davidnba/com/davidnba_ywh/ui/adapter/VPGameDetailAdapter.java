@@ -13,6 +13,10 @@ import com.yuyh.library.view.viewpager.indicator.FragmentListPageAdapter;
 import com.yuyh.library.view.viewpager.indicator.IndicatorViewPager;
 
 import davidnba.com.davidnba_ywh.R;
+import davidnba.com.davidnba_ywh.ui.fragment.MatchDataFragment;
+import davidnba.com.davidnba_ywh.ui.fragment.MatchLiveFragment;
+import davidnba.com.davidnba_ywh.ui.fragment.MatchLookForwardFragment;
+import davidnba.com.davidnba_ywh.ui.fragment.MatchPlayerDataFragment;
 
 /**
  * Created by 仁昌居士 on 2017/2/13.

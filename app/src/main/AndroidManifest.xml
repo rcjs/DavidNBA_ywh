@@ -48,6 +48,9 @@
             android:screenOrientation="portrait" >
 
         </activity>
+
+        <activity android:name=".ui.view.activity.MatchDetailActivity"
+            android:screenOrientation="portrait" ></activity>
     </application>
 
 </manifest>

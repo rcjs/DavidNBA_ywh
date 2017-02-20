@@ -13,6 +13,7 @@ import com.yuyh.library.view.viewpager.indicator.IndicatorViewPager;
 import com.yuyh.library.view.viewpager.indicator.ScrollIndicatorView;
 
 import org.greenrobot.eventbus.EventBus;
+import org.greenrobot.eventbus.Subscribe;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -21,6 +22,7 @@ import java.util.Date;
 import butterknife.BindView;
 import davidnba.com.davidnba_ywh.R;
 import davidnba.com.davidnba_ywh.base.BaseSwipeBackCompatActivity;
+import davidnba.com.davidnba_ywh.event.RefreshCompleteEvent;
 import davidnba.com.davidnba_ywh.event.RefreshEvent;
 import davidnba.com.davidnba_ywh.http.bean.match.MatchBaseInfo;
 import davidnba.com.davidnba_ywh.ui.adapter.VPGameDetailAdapter;
@@ -201,4 +203,9 @@ public class MatchDetailActivity extends BaseSwipeBackCompatActivity implements 
             EventBus.getDefault().post(new RefreshEvent());
         }
     };
+
+    @Subscribe
+    public void onEventMainThread(RefreshCompleteEvent event) {
+        swipeRefreshLayout.setRefreshing(false);
+    }
 }
