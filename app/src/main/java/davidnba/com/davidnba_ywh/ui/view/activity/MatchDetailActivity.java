@@ -111,25 +111,6 @@ public class MatchDetailActivity extends BaseSwipeBackCompatActivity implements 
     }
 
     @Override
-    public void isStick(boolean isStick) {
-        if (lastIsTopHidden != isStick) {
-            lastIsTopHidden = isStick;
-        }
-    }
-
-    @Override
-    public void scrollPercent(float percent) {
-        rlMatchToolbar.getBackground().setAlpha((int) ((float) 255 * percent));
-        if (percent == 0) {
-            swipeRefreshLayout.setEnabled(true);
-            swipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
-        } else {
-            swipeRefreshLayout.setEnabled(false);
-            swipeRefreshLayout.setOnRefreshListener(null);
-        }
-    }
-
-    @Override
     public void showTabViewPager(String[] names, boolean isStart) {
         isNeedUpdateTab = false;
         hideLoadingDialog();
@@ -175,6 +156,26 @@ public class MatchDetailActivity extends BaseSwipeBackCompatActivity implements 
         ivMatchRightTeam.setController(FrescoUtils.getController(info.rightBadge, ivMatchRightTeam));
     }
 
+
+    @Override
+    public void isStick(boolean isStick) {
+        if (lastIsTopHidden != isStick) {
+            lastIsTopHidden = isStick;
+        }
+    }
+
+    @Override
+    public void scrollPercent(float percent) {
+        rlMatchToolbar.getBackground().setAlpha((int) ((float) 255 * percent));
+        if (percent == 0) {
+            swipeRefreshLayout.setEnabled(true);
+            swipeRefreshLayout.setOnRefreshListener(mOnRefreshListener);
+        } else {
+            swipeRefreshLayout.setEnabled(false);
+            swipeRefreshLayout.setOnRefreshListener(null);
+        }
+    }
+
     @Override
     public void showLoading(String msg) {
         showLoadingDialog();
@@ -190,6 +191,11 @@ public class MatchDetailActivity extends BaseSwipeBackCompatActivity implements 
 
     }
 
+    @Subscribe
+    public void onEventMainThread(RefreshCompleteEvent event) {
+        swipeRefreshLayout.setRefreshing(false);
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();
@@ -203,9 +209,4 @@ public class MatchDetailActivity extends BaseSwipeBackCompatActivity implements 
             EventBus.getDefault().post(new RefreshEvent());
         }
     };
-
-    @Subscribe
-    public void onEventMainThread(RefreshCompleteEvent event) {
-        swipeRefreshLayout.setRefreshing(false);
-    }
 }

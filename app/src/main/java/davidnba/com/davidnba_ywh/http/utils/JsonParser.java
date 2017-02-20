@@ -1,6 +1,7 @@
 package davidnba.com.davidnba_ywh.http.utils;
 
 import davidnba.com.davidnba_ywh.http.bean.base.Base;
+import davidnba.com.davidnba_ywh.http.bean.match.LiveDetail;
 import davidnba.com.davidnba_ywh.http.bean.match.MatchStat;
 import davidnba.com.davidnba_ywh.http.bean.news.NewsDetail;
 import davidnba.com.davidnba_ywh.http.bean.news.NewsItem;
@@ -134,5 +135,39 @@ public class JsonParser {
         return newsItem;
     }
 
+    public static LiveDetail parseMatchLiveDetail(String jsonStr) {
+        LiveDetail detail = new LiveDetail();
+        detail.data = new LiveDetail.LiveDetailData();
+        String dataStr = JsonParser.parseBase(detail, jsonStr);
+        JSONObject data = JSON.parseObject(dataStr);
+        List<LiveDetail.LiveDetailData.LiveContent> list = new ArrayList<>();
+        for (Map.Entry<String, Object> item : data.entrySet()) {
+            if (item.getKey().equals("teamInfo")) {
+                String teamInfo = item.getValue().toString();
+                detail.data.teamInfo = new Gson().fromJson(teamInfo, LiveDetail.LiveDetailData.TeamInfo.class);
+            } else if (item.getKey().equals("detail")) {
+                JSONObject details = JSON.parseObject(item.getValue().toString());
+                if (details != null) {
+                    for (Map.Entry<String, Object> entry : details.entrySet()) {
+                        LiveDetail.LiveDetailData.LiveContent content;
+                        String contentStr = entry.getValue().toString();
+                        Gson gson = new Gson();
+                        content = gson.fromJson(contentStr, LiveDetail.LiveDetailData.LiveContent.class);
+                        content.id = entry.getKey();
+                        list.add(content);
+                    }
+                }
+            }
+        }
+        // 由于fastjson获取出来的entrySet是乱序的  所以这边重新排序
+        Collections.sort(list, new Comparator<LiveDetail.LiveDetailData.LiveContent>() {
+            @Override
+            public int compare(LiveDetail.LiveDetailData.LiveContent lhs, LiveDetail.LiveDetailData.LiveContent rhs) {
+                return rhs.id.compareTo(lhs.id);
+            }
+        });
+        detail.data.detail = list;
+        return detail;
+    }
 
 }

@@ -4,8 +4,11 @@ package davidnba.com.davidnba_ywh.http.api.tencent;
 import davidnba.com.davidnba_ywh.BuildConfig;
 import davidnba.com.davidnba_ywh.app.Constant;
 import davidnba.com.davidnba_ywh.http.api.RequestCallback;
+import davidnba.com.davidnba_ywh.http.bean.match.LiveDetail;
+import davidnba.com.davidnba_ywh.http.bean.match.LiveIndex;
 import davidnba.com.davidnba_ywh.http.bean.match.MatchBaseInfo;
 import davidnba.com.davidnba_ywh.http.bean.match.MatchCalendar;
+import davidnba.com.davidnba_ywh.http.bean.match.MatchStat;
 import davidnba.com.davidnba_ywh.http.bean.match.Matchs;
 import davidnba.com.davidnba_ywh.http.bean.news.NewsDetail;
 import davidnba.com.davidnba_ywh.http.bean.news.NewsIndex;
@@ -305,6 +308,83 @@ public class TecentService {
             @Override
             public void onFailure(Call<String> call, Throwable t) {
                 cbk.onFailure(t.getMessage());
+            }
+        });
+    }
+
+
+    /**
+     * 获取比赛前瞻信息
+     *
+     * @param mid
+     * @param tabType 1：比赛数据  2：技术统计  3：比赛前瞻
+     * @param cbk
+     */
+    public static void getMatchStat(String mid, String tabType, final RequestCallback<MatchStat> cbk) {
+        Call<String> call = api.getMatchStat(mid, tabType);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response != null && !TextUtils.isEmpty(response.body())) {
+                    String jsonStr = response.body();
+                    // if(!jsonStr.contains("\"type\":\"16\"")) { // TODO 居然出现相同key而且数据格式不一样的json..后续再处理
+                    MatchStat matchStat = JsonParser.parseWithGson(MatchStat.class, jsonStr);
+                    cbk.onSuccess(matchStat);
+                    //}
+                    LogUtils.d("resp:" + jsonStr);
+                } else {
+                    cbk.onFailure("获取数据失败");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                cbk.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public static void getMatchLiveIndex(String mid, final RequestCallback<LiveIndex> cbk) {
+        Call<String> call = api.getMatchLiveIndex(mid);
+        call.enqueue(new Callback<String>() {
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response != null && !TextUtils.isEmpty(response.body())) {
+                    String jsonStr = response.body();
+                    LiveIndex liveIndex = JsonParser.parseWithGson(LiveIndex.class, jsonStr);
+                    cbk.onSuccess(liveIndex);
+                    LogUtils.d("resp:" + jsonStr);
+                } else {
+                    cbk.onFailure("获取数据失败");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+                cbk.onFailure(t.getMessage());
+            }
+        });
+    }
+
+    public static void getMatchLiveDetail(String mid, String ids, final RequestCallback<LiveDetail> cbk) {
+        Call<String> call = api.getMatchLiveDetail(mid, ids);
+        call.enqueue(new Callback<String>() {
+
+            @Override
+            public void onResponse(Call<String> call, Response<String> response) {
+                if (response != null && !TextUtils.isEmpty(response.body())) {
+                    String jsonStr = response.body();
+                    LiveDetail liveIndex = JsonParser.parseMatchLiveDetail(jsonStr);
+                    cbk.onSuccess(liveIndex);
+                    LogUtils.d("resp:" + jsonStr);
+                } else {
+                    cbk.onFailure("获取数据失败");
+                }
+            }
+
+            @Override
+            public void onFailure(Call<String> call, Throwable t) {
+
             }
         });
     }

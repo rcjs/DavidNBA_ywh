@@ -26,28 +26,27 @@ import davidnba.com.davidnba_ywh.event.CalendarEvent;
 import davidnba.com.davidnba_ywh.http.api.RequestCallback;
 import davidnba.com.davidnba_ywh.http.api.tencent.TecentService;
 import davidnba.com.davidnba_ywh.http.bean.match.Matchs;
-import davidnba.com.davidnba_ywh.http.bean.player.StatsRank;
 import davidnba.com.davidnba_ywh.support.OnListItemClickListener;
 import davidnba.com.davidnba_ywh.support.SpaceItemDecoration;
 import davidnba.com.davidnba_ywh.support.SupportRecyclerView;
 import davidnba.com.davidnba_ywh.ui.adapter.ScheduleAdapter;
 import davidnba.com.davidnba_ywh.ui.view.activity.MatchDetailActivity;
 
-import static android.R.attr.data;
-import static rx.Completable.complete;
-
 /**
  * Created by 仁昌居士 on 2017/2/7.
  */
 
 public class ScheduleFragment extends BaseLazyFragment {
+
     private String date = "";
+
     @BindView(R.id.refresh)
     MaterialRefreshLayout materialRefreshLayout;
     @BindView(R.id.recyclerview)
     SupportRecyclerView recyclerView;
     @BindView(R.id.emptyView)
     View emptyView;
+
     private ScheduleAdapter adapter;
     private List<Matchs.MatchsDataBean.MatchesBean> list = new ArrayList<>();
 
@@ -58,12 +57,30 @@ public class ScheduleFragment extends BaseLazyFragment {
         ButterKnife.bind(this, getContentView());
         date = DateUtils.format(System.currentTimeMillis(), "yyyy-MM-dd");
         LogUtils.i(date);
-        EventBus.getDefault().register(this);//注入eventbus
+        EventBus.getDefault().register(this);//注册EventBus
 
         mActivity.invalidateOptionsMenu();
 
         initView();
         requestMatchs(date, true);
+    }
+
+    private void initView() {
+        adapter = new ScheduleAdapter(list, mActivity, R.layout.item_list_match);
+        adapter.setOnItemClickListener(new OnListItemClickListener<Matchs.MatchsDataBean.MatchesBean>() {
+            @Override
+            public void onItemClick(View view, int position, Matchs.MatchsDataBean.MatchesBean data) {
+                Intent intent = new Intent(mActivity, MatchDetailActivity.class);
+                intent.putExtra(MatchDetailActivity.INTENT_MID, data.matchInfo.mid);
+                startActivity(intent);
+            }
+        });
+        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
+        recyclerView.setAdapter(adapter);
+        recyclerView.setItemAnimator(new DefaultItemAnimator());
+        recyclerView.addItemDecoration(new SpaceItemDecoration(DimenUtils.dpToPxInt(3)));
+        materialRefreshLayout.setMaterialRefreshListener(new RefreshListener());
+        materialRefreshLayout.setLoadMore(false);
     }
 
     private void requestMatchs(String date, boolean isRefresh) {
@@ -88,25 +105,6 @@ public class ScheduleFragment extends BaseLazyFragment {
         });
     }
 
-    private void initView() {
-        adapter = new ScheduleAdapter(list, mActivity, R.layout.item_list_match);
-        adapter.setOnItemClickListener(new OnListItemClickListener<Matchs.MatchsDataBean.MatchesBean>() {
-            @Override
-            public void onItemClick(View view, int position, Matchs.MatchsDataBean.MatchesBean data) {
-                Intent intent = new Intent(mActivity, MatchDetailActivity.class);
-                intent.putExtra(MatchDetailActivity.INTENT_MID, data.matchInfo.mid);
-                startActivity(intent);
-            }
-        });
-        recyclerView.setLayoutManager(new LinearLayoutManager(recyclerView.getContext()));
-        recyclerView.setAdapter(adapter);
-        recyclerView.setItemAnimator(new DefaultItemAnimator());
-        recyclerView.addItemDecoration(new SpaceItemDecoration(DimenUtils.dpToPxInt(3)));
-        materialRefreshLayout.setMaterialRefreshListener(new RefreshListener());
-        materialRefreshLayout.setLoadMore(false);
-    }
-
-
     private class RefreshListener extends MaterialRefreshListener {
         @Override
         public void onRefresh(final MaterialRefreshLayout materialRefreshLayout) {
@@ -122,7 +120,6 @@ public class ScheduleFragment extends BaseLazyFragment {
         hideLoadingDialog();
     }
 
-
     @Subscribe
     public void onEventMainThread(CalendarEvent msg) {
         date = msg.getDate();
@@ -133,7 +130,7 @@ public class ScheduleFragment extends BaseLazyFragment {
     @Override
     public void setUserVisibleHint(boolean isVisibleToUser) {
         super.setUserVisibleHint(isVisibleToUser);
-        if(isVisibleToUser){
+        if (isVisibleToUser) {
             mActivity.invalidateOptionsMenu();
         }
     }
@@ -141,6 +138,6 @@ public class ScheduleFragment extends BaseLazyFragment {
     @Override
     protected void onDestroyViewLazy() {
         super.onDestroyViewLazy();
-        EventBus.getDefault().unregister(this);//注销eventbus
+        EventBus.getDefault().unregister(this);//注销EventBus
     }
 }
